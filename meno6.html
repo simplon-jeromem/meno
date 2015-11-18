@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Meno jerome</title>
+</head>
+<body>
+<style>
+button{
+  width:150px;
+  height:300px;
+  background-color:grey;
+}
+.blue{
+  background-color:blue;
+}   
+.green{
+  background-color:green;
+}
+.red{
+  background-color:red;
+}
+.yellow{
+  background-color:yellow;
+}
+</style>
+    <div id="temps"></div>
+  <button type="button" id="carte0" onclick="arrondi(0)" ondblclick="doubleclick()"></button>
+  <button type="button" id="carte1" onclick="arrondi(1)"ondblclick="doubleclick()"></button>
+   <button type="button" id="carte2" onclick="arrondi(2)"ondblclick="doubleclick()"></button>
+   <button type="button" id="carte3" onclick="arrondi(3)"ondblclick="doubleclick()"></button>
+    <br>
+    <button type="button" id="carte4" onclick="arrondi(4)"ondblclick="doubleclick()"></button>
+   <button type="button" id="carte5" onclick="arrondi(5)"ondblclick="doubleclick()"></button>
+   <button type="button" id="carte6" onclick="arrondi(6)"ondblclick="doubleclick()"></button>
+   <button type="button" id="carte7" onclick="arrondi(7)"ondblclick="doubleclick()"></button>
+  
+  <div >
+  <script>
+function melangeCarte(tab){
+    var j=0;
+    var valeur1='';
+    var valeur2='';
+    var l=tab.length-1;
+    while(l>-1){
+        j=Math.floor(Math.random()*l)
+        valeur1=tab[l];
+        valeur2=tab[j];
+        tab[l]=valeur2;
+        tab[j]=valeur1;
+        l=l-1;
+    }
+}
+      var temps;
+      var compteur=0;
+      colortab=["red","blue","green","yellow","red","blue","green","yellow"];
+      carte=["carte0","carte1","carte2","carte3","carte4","carte5","carte6","carte7"]
+      paireTrouve=[];
+      m=0;
+    melangeCarte(colortab);
+      p=0
+compteur=0;
+color="";
+boite='';
+paire=0;
+var time =0;
+var generalTemps=0;
+      var interval=0;
+      function timer(){
+            document.getElementById("temps").innerHTML="<h1> il reste"+interval+"</h1>";
+          interval=interval+1;
+      }
+      function doubleclick(){
+          perdu();
+      }
+      function perdu(){
+          alert("perdu");
+          window.clearTimeout(generalTemps);
+          window.clearTimeout(time);
+          window.clearInterval(temps);
+          for(var t=0;t<colortab.length;t++){
+    boite = document.getElementById(carte[t]);
+  boite.classList.remove(colortab[t]);
+          }
+          for(var f=0;f<paireTrouve.length;f++){
+              boite=document.getElementById(paireTrouve[f].carte1);
+              boite.classList.add(paireTrouve[f].couleur);
+              console.log(paireTrouve[f].carte1);
+              boite=document.getElementById(paireTrouve[f].carte2);
+              boite.classList.add(paireTrouve[f].couleur);
+          }
+    color="";
+     time=0;
+          generalTemps=0;
+          compteur=0;
+          temps=0;
+ }
+function gagne(){
+    alert("gagné");
+     window.clearTimeout(generalTemps);
+          window.clearTimeout(time);
+    window.clearInterval(temps);
+    window.clearTimeout(temps);
+    var reponse=prompt("voulez-vous rejouez o/n");
+    if(reponse==="o"){
+   for(var i=0;i<colortab.length;i++){
+    boite = document.getElementById(carte[i]);
+  boite.classList.remove(colortab[i]);
+   }
+         melangeCarte(colortab);
+    color="";
+      paire=0;
+     time=0;
+          generalTemps=0;
+        compteur=0;
+        temps=0;
+        interval=0;
+        document.getElementById("temps").innerHTML="<h1> il reste"+interval+"</h1>";
+    }else{
+        alert("merci avoir joué");
+    }
+}
+function arrondi(i){
+    if(generalTemps===0){
+        generalTemps=window.setTimeout(perdu,20000);
+        temps=window.setInterval(timer,1000);
+         }
+ if(color==="" ){
+    time=window.setTimeout(perdu,4000);
+    boite = document.getElementById(carte[i]);
+  boite.classList.add(colortab[i]);
+  color=colortab[i];
+     compteur=1;
+     j=i;
+     }else{
+  if(color===colortab[i]) {
+      var maPaire =new Object();
+      maPaire.carte1=carte[j];
+      maPaire.carte2=carte[i];
+      maPaire.couleur=color;
+      paireTrouve.push(maPaire);
+      console.log(paireTrouve);
+      console.log(paireTrouve[0]);
+      boite = document.getElementById(carte[i]);
+  boite.classList.add(colortab[i]);
+    paire=paire+1;
+    color="";
+      window.clearTimeout(time);
+      time=0;
+      compteur=0;
+      if(paire===4){
+        gagne();
+          }
+  }else{
+      boite = document.getElementById(carte[i]);
+  boite.classList.add(colortab[i]);
+     perdu();
+  }
+}
+}
+</script>
+</body>
+</html>
